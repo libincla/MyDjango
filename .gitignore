@@ -1,0 +1,8 @@
+.idea
+db.sqlite3
+index/migrations/
+index/__pycache__/
+user/migrations/
+user/__pycache__/
+MyDjango/__pycache__/
+.DS_Store
