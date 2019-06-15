@@ -4,9 +4,9 @@
     <title>{{ title }}</title>
     <meta charset="utf-8">
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static "css/hw_index.css" %}" >
-    <link rel="icon" href="{% static "img/hw.ico" %}">
-    <script src="{% static "js/hw_index.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/hw_index.css' %}">
+    <link rel="icon" href="{% static 'img/hw.ico' %}">
+    <script src="{% static 'js/hw_index.js' %}"></script>
 </head>
 <body>
 <!-- 页面顶部 -->
@@ -28,7 +28,7 @@
 <!-- logo 和 搜索框 -->
 <div id="top_main">
     <div class="lf  top_main_left">
-        <img src="{% static "img/newLogo.png" %}" alt="" />
+        <img src="{% static 'img/newLogo.png' %}" alt=""/>
     </div>
     <div class="lf search_box">
         <div class="search">
@@ -63,16 +63,16 @@
 </nav>
 <!-- banner 广告 -->
 <div id="banner">
-{#    <ul id="cate_box" class="lf">#}
-{#        <li>#}
-{#            <h3><a href="#">手机</a></h3>#}
-{#            <p><span>荣耀</span><span>畅玩</span><span>华为</span><span>Mate/P系列</span></p>#}
-{#        </li>#}
-{#        <li>#}
-{#            <h3><a href="#">平板 & 穿戴</a></h3>#}
-{#            <p><span>平板电脑 </span><span>手环</span><span>手表</span></p>#}
-{#        </li>#}
-{#    </ul>#}
+    <!--{#    <ul id="cate_box" class="lf">#}-->
+    <!--{#        <li>#}-->
+    <!--{#            <h3><a href="#">手机</a></h3>#}-->
+    <!--{#            <p><span>荣耀</span><span>畅玩</span><span>华为</span><span>Mate/P系列</span></p>#}-->
+    <!--{#        </li>#}-->
+    <!--{#        <li>#}-->
+    <!--{#            <h3><a href="#">平板 & 穿戴</a></h3>#}-->
+    <!--{#            <p><span>平板电脑 </span><span>手环</span><span>手表</span></p>#}-->
+    <!--{#        </li>#}-->
+    <!--{#    </ul>#}-->
 
     <ul id="cate_box" class="lf">
         {% for type in type_list %}
@@ -80,9 +80,9 @@
             <h3><a href="#">{{ type.type }}</a></h3>
             <p>
                 {% for name in name_list %}
-                    {% if name.type == type.type %}
-                        <span>{{ name.name }}</span>
-                    {% endif %}
+                {% if name.type == type.type %}
+                <span>{{ name.name }}</span>
+                {% endif %}
                 {% endfor %}
             </p>
         </li>
@@ -92,7 +92,7 @@
     <!--图片轮播 -->
     <form>
         <div class="slider">
-            <img id="slider_img" class="img_slider" src="{% static "img/slide01.png" %}" alt=""/>
+            <img id="slider_img" class="img_slider" src="{% static 'img/slide01.png' %}" alt=""/>
         </div>
     </form>
 
@@ -106,7 +106,7 @@
                 <li class="channel-pro-item">
                     <!--<i class="p-tag"><img src="img/new_ping.png" style="padding-left: 0" alt=""/></i>-->
                     <div class="p-img">
-                        <img src="{% static "img/phone01.png" %}" alt=""/>
+                        <img src="{% static 'img/phone01.png' %}" alt=""/>
                     </div>
                     <div class="p-name lf"><a href="#">HUAWEI P9 Plus</a></div>
                     <div class="p-shining">
@@ -124,7 +124,7 @@
                 <li class="channel-pro-item" style="background-color:#E2F9FB"><!--荣耀畅玩5C-->
                     <!--<i class="p-tag"><img src="img/new_ping02.png" alt=""/></i>-->
                     <div class="p-img">
-                        <img src="{% static "img/phone02.png" %}" alt=""/>
+                        <img src="{% static 'img/phone02.png' %}" alt=""/>
                     </div>
                     <div class="p-name lf"><a href="#">荣耀畅玩5C</a></div>
                     <div class="p-shining">
@@ -137,13 +137,13 @@
                     </div>
                     <div class="p-button lf">
                         <a href="#">立即抢购</a>
-                   </div>
+                    </div>
                 </li>
                 <div class="hr-2"></div>
                 <li class="channel-pro-item" style="background-color:#FFFCE7"><!--荣耀畅玩5C-->
                     <!--<i class="p-tag"><img src="img/hot_but.png" alt=""/></i>-->
                     <div class="p-img">
-                        <img src="{% static "img/phone05.png" %}" alt=""/>
+                        <img src="{% static 'img/phone05.png' %}" alt=""/>
                     </div>
                     <div class="p-name lf"><a href="#">荣耀7</a></div>
                     <div class="p-shining">
@@ -161,7 +161,7 @@
                 <li class="channel-pro-item" style="background-color:#FFECEF"><!--荣耀畅玩5C-->
                     <!--<i class="p-tag"><img src="img/hot_but.png" alt=""/></i>-->
                     <div class="p-img">
-                        <img src="{% static "img/phone06.png" %}" alt=""/>
+                        <img src="{% static 'img/phone06.png' %}" alt=""/>
                     </div>
                     <div class="p-name lf"><a href="#">荣耀畅玩5X</a></div>
                     <div class="p-shining">
@@ -180,7 +180,7 @@
         </div><!-- u-4-3结束-->
         <div class="lf fr u-4-1">
             <div class="channel-sale">
-                <img src="{% static "img/phone03.jpg" %}" alt=""/>
+                <img src="{% static 'img/phone03.jpg' %}" alt=""/>
             </div>
             <div class="hr-2"></div>
             <ul class="h-tab">
@@ -210,31 +210,31 @@
         </div>
         <div class="hr-2"></div>
         <div class="banner">
-            <img class="rt" src="{% static "img/vip.jpg" %}" alt=""/>
+            <img class="rt" src="{% static 'img/vip.jpg' %}" alt=""/>
             <div class="hr-2"></div>
         </div>
     </div><!--layout HUAWEI P9 Plus结束-->
 </section>
 
 
-   <div class="hr-2"></div>
-       <div id="banner_img">
-        <div class="banner-slideshow">
-            <img src="{% static "img/p9.jpg" %}" width="100%" alt=""/>
-            </div>
-        </div>
+<div class="hr-2"></div>
+<div id="banner_img">
+    <div class="banner-slideshow">
+        <img src="{% static 'img/p9.jpg' %}" width="100%" alt=""/>
     </div>
-   <div class="hr-2"></div>
-     <div class="hr-40"></div>
+</div>
+</div>
+<div class="hr-2"></div>
+<div class="hr-40"></div>
 
-   <div class="slogan">
-       <ul>
-           <li class="s1"><i>500强企业 品质保证</i></li>
-           <li class="s1"><i>7天退货 15天换货 </i></li>
-           <li class="s1"><i>99元起免运费</i></li>
-           <li class="s1"><i>448家维修网点 全国联保</i></li>
-       </ul>
-   </div>
+<div class="slogan">
+    <ul>
+        <li class="s1"><i>500强企业 品质保证</i></li>
+        <li class="s1"><i>7天退货 15天换货 </i></li>
+        <li class="s1"><i>99元起免运费</i></li>
+        <li class="s1"><i>448家维修网点 全国联保</i></li>
+    </ul>
+</div>
 
 </body>
 </html>
