@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Product
+from django.views.generic import ListView
 
 
 def index(request):
@@ -22,3 +23,27 @@ def login(request):
         else:
             name = 'Everyone'
         return HttpResponse('username is ' + name)
+
+
+# http://127.0.0.1:8000/index
+class ProductList(ListView):
+    # 设置 HTML 模板的变量名称
+    context_object_name = 'type_list'
+
+    # 设定模板名称
+    template_name = 'index.html'
+
+    # 查询数据，查询结果会赋值给 context_object_name所设置的变量
+    queryset = Product.objects.values('type').distinct()
+
+    # 重写函数 get_queryset，该函数的功能与 queryset实现的功能一致
+    # def get_queryset(self):
+    #     type_list = Product.objects.values('type').distinct()
+    #     return type_list
+
+    # 添加其他变量
+    # 重写函数 get_context_data，该函数设置 HTML 模板的其他变量
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name_list'] = Product.objects.values('name', 'type')
+        return context
