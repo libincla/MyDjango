@@ -1,7 +1,9 @@
 .idea
-db.sqlite3
-index/migrations/
-index/__pycache__/
-MyDjango/__pycache__/
 .DS_Store
 venv
+db.sqlite3
+MyDjango/__pycache__/
+index/migrations/
+index/__pycache__/
+user_defined/__pycache__/
+user_defined/templatetags/__pycache__/

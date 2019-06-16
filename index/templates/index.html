@@ -1,7 +1,8 @@
+{% load myfilter %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ title }}</title>
+    <title>{{ title|myreplace:'首页：我的首页' }}</title>
     <meta charset="utf-8">
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/hw_index.css' %}">
@@ -64,14 +65,14 @@
 <!-- banner 广告 -->
 <div id="banner">
     <!--<ul id="cate_box" class="lf">-->
-        <!--<li>-->
-            <!--<h3><a href="#">手机</a></h3>-->
-            <!--<p><span>荣耀</span><span>畅玩</span><span>华为</span><span>Mate/P系列</span></p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<h3><a href="#">平板 & 穿戴</a></h3>-->
-            <!--<p><span>平板电脑 </span><span>手环</span><span>手表</span></p>-->
-        <!--</li>-->
+    <!--<li>-->
+    <!--<h3><a href="#">手机</a></h3>-->
+    <!--<p><span>荣耀</span><span>畅玩</span><span>华为</span><span>Mate/P系列</span></p>-->
+    <!--</li>-->
+    <!--<li>-->
+    <!--<h3><a href="#">平板 & 穿戴</a></h3>-->
+    <!--<p><span>平板电脑 </span><span>手环</span><span>手表</span></p>-->
+    <!--</li>-->
     <!--</ul>-->
 
     <ul id="cate_box" class="lf">
