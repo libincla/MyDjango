@@ -76,7 +76,7 @@ DATABASES = {
     # 第一个数据库
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django_db',
+        'NAME': 'mydjango',
         'USER': 'root',
         'PASSWORD': 'helloekwing',
         'HOST': 'localhost',
