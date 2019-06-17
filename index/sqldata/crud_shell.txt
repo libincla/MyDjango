@@ -1,0 +1,121 @@
+一、增加数据
+
+方式1：通过shell命令插入一条数据
+>>> from index.models import *
+>>> p = Product()
+>>> p.name = '荣耀V9'
+>>> p.weight = '111g'
+>>> p.size = '120*75*7mm'
+>>> p.type_id = 1
+>>> p.save()
+
+方式2：通过 Django 的 ORM 框架提供的API实现，使用 Create 插入
+>>> Product.objects.create(name='荣耀V7', weight='112g', size='120*75*7mm',type_id=1)
+
+方式3：在实例化时直接设置属性
+>>> from index.models import *
+>>> p = Product(name='荣耀V10', weight='122g', size='120*80*8mm', type_id=1)
+>>> p.save()
+
+
+
+二、删除数据
+
+删除全部数据
+>>> Product.objects.all().delete()
+
+删除一条数据
+>>> Product.objects.get(id=1).delete()
+
+删除多条数据
+>>> Product.objects.filter(name='荣耀V9').delete()
+
+
+
+三、修改数据
+
+更新多条数据，查询条件 filter 以列表格式返回， 查询结果可能是一条或多条数据
+>>> Product.objects.filter(name='荣耀V7').update(name='华为荣耀V7')
+
+全表数据更新，不使用查询条件，默认对全表的数据进行更新
+>>> Product.objects.update(name='华为荣耀V7')
+
+
+
+四、查询数据
+
+全表查询
+>>> from index.models import *
+>>> p = Product.objects.all()
+>>> p[1].name
+
+查询前5条数据
+>>> p = Product.objects.all()[:5]
+
+查询某个字段
+>>> p = Product.objects.values('name')
+>>> p[1]['name']
+
+values_list 方法，以列表的形式返回数据，列表元素以元组的格式表示
+>>> p = Product.objects.values_list('name')[:3]
+
+使用 get 方法查询数据
+>>> p = Product.objects.get(id=2)
+>>> p.name
+
+使用 filter 方法查询数据，注意 filter 与 get 的区别
+>>> p = Product.objects.filter(id=2)
+>>> p[0].name
+
+SQL 的 and 查询
+>>> p = Product.objects.filter(name='华为荣耀V7', id =10 )
+
+SQL 的 or 查询，引入Q，编写格式：Q(field=value)|Q(field=value)
+>>> from django.db.models import Q
+>>> p = Product.objects.filter(Q(name='华为荣耀V7')|Q(id=5))
+>>> p
+
+使用 count 方法统计查询数据的数据量
+>>> p = Product.objects.filter(name='华为荣耀V7').count()
+>>> p
+
+去重查询
+>>> p = Product.objects.values('name').filter(name='华为荣耀V7').distinct()
+>>> p
+
+降序排列
+>>> p = Product.objects.order_by('-id')
+>>> p
+
+聚合查询，实现对数据值求和、求平均值等。
+Django 提供的 annotate 和 aggregate 方法实现。
+annotate 类似于 SQL 里面的 GROUP BY 方法，如果不设置 value ，就会默认对主键 GROUP BY 分组
+>>> from django.db.models import Sum
+>>> p = Product.objects.values('name').annotate(Sum('id'))
+>>> p
+>>> print(p.query)
+SELECT `index_product`.`name`, SUM(`index_product`.`id`) AS `id__sum` FROM `index_product` GROUP BY `index_product`.`name` ORDER BY NULL
+
+>>> from django.db.models import Count
+>>> p = Product.objects.aggregate(id_count=Count('id'))
+>>> p
+
+查询 id>9 的数据
+>>> p = Product.objects.filter(id__gt=9)
+>>> p
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
