@@ -1,11 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import Product
+from .models import Product, Type
 from django.views.generic import ListView
 
 
 def index(request):
-    type_list = Product.objects.values('type').distinct()
+    type_list = Type.objects.values('id', 'type_name')
     name_list = Product.objects.values('name', 'type')
     title = '首页'
     return render(request, 'index.html', context=locals(), status=200)
