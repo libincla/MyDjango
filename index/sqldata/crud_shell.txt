@@ -105,11 +105,71 @@ SELECT `index_product`.`name`, SUM(`index_product`.`id`) AS `id__sum` FROM `inde
 >>> p
 
 
+多表查询
+
+正向查询
+
+>>> from index.models import Type, Product
+>>> t = Type.objects.filter(product__id=10)
+>>> t
+<QuerySet [<Type: Type object (1)>]>
+>>> t[0].type_name
+'手机'
+
+反向查询
+
+方式1：通过两次查询达到反向查询的效果
+
+>>> from index.models import Type, Product
+>>> t = Type.objects.filter(product__id=10)
+>>> t[0].product_set.values('name')
+<QuerySet [{'name': 'HUAWEI nova 2s '}, {'name': '华为荣耀V7'}, {'name': '荣耀V10'}, {'name': '华为荣耀V7'}]>
+
+方式2：通过一次查询达到反向查询的效果（select_related）
+
+type__type_name 遵循"外键__字段名"的格式， 本例中表示 模型 Product 的外键 type 指向模型 Type 的字段 type_name，type 代表 Product 的外键 type
+>>> p = Product.objects.select_related('type').values('name','type__type_name')
+>>> print(p.query)
+SELECT `index_product`.`name`, `index_type`.`type_name` FROM `index_product` INNER JOIN `index_type` ON (`index_product`.`type_id` = `index_type`.`id`)
+>>> p
+<QuerySet [{'name': 'HUAWEI nova 2s ', 'type__type_name': '手机'}, {'name': '荣耀Waterplay', 'type__type_name': '平板电脑'}, {'name': '荣耀畅玩平板', 'type__type_name': '平板电脑'}, {'name': 'PORe__type_name': '智能穿戴'}, {'name': '华为运动手环', 'type__type_name': '智能穿戴'}, {'name': '荣耀移动电源', 'type__type_name': '通用配件'}, {'name': '荣耀体脂称', 'type__type_name': '通用配件'}name': '手机'}, {'name': '荣耀V10', 'type__type_name': '手机'}, {'name': '华为荣耀V7', 'type__type_name': '手机'}]>
+
+查询两个模型的全部数据
+>>> p = Product.objects.select_related('type').all()
+>>> print(p.query)
+SELECT `index_product`.`id`, `index_product`.`name`, `index_product`.`weight`, `index_product`.`size`, `index_product`.`type_id`, `index_type`.`id`, `index_type`.`type_name` FROM `index_product` INNER JOIN `index_type` ON (`index_product`.`type_id` = `index_type`.`id`)
+>>> p
+<QuerySet [<Product: Product object (2)>, <Product: Product object (3)>, <Product: Product object (4)>, <Product: Product object (5)>, <Product: Product object (6)>, <Product: Product object (7)>, <Product: Product object (8)>, <Product: Product object (10)>, <Product: Product object (11)>, <Product: Product object (12)>]>
+
+获取两个模型的数据，以模型 Product 的 id 大于8为查询条件
+>>> p = Product.objects.select_related('type').filter(id__gt=8)
+>>> print(p.query)
+SELECT `index_product`.`id`, `index_product`.`name`, `index_product`.`weight`, `index_product`.`size`, `index_product`.`type_id`, `index_type`.`id`, `index_type`.`type_name` FROM `index_product` INNER JOIN `index_type` ON (`index_product`.`type_id` = `index_type`.`id`) WHERE `index_product`.`id` > 8
+>>> p
+<QuerySet [<Product: Product object (10)>, <Product: Product object (11)>, <Product: Product object (12)>]>
+
+获取两个模型的数据，以模型 Type 的 type_name 等于"手机"为查询条件
+>>> p = Product.objects.select_related('type').filter(type__type_name='手机').all()
+>>> print(p.query)
+SELECT `index_product`.`id`, `index_product`.`name`, `index_product`.`weight`, `index_product`.`size`, `index_product`.`type_id`, `index_type`.`id`, `index_type`.`type_name` FROM `index_product` INNER JOIN `index_type` ON (`index_product`.`type_id` = `index_type`.`id`) WHERE `index_type`.`type_name` = 手机
+>>> p
+<QuerySet [<Product: Product object (2)>, <Product: Product object (10)>, <Product: Product object (11)>, <Product: Product object (12)>]>
+输出模型 Product 所关联模型 Type 的信息
+>>> p[0].type
+<Type: Type object (1)>
+>>> p[0].type.type_name
+'手机'
 
 
-
-
-
+select_ralated 还可以支持三个或三个以上的数据表同时查询
+>>> from index.models import Province, City, Person
+>>> p = Person.objects.select_related('living__province').get(name='张三')
+>>> p.living.province.name
+'北京'
+>>> p.living.name
+'大兴'
+>>> p.name
+'张三'
 
 
 

@@ -60,3 +60,20 @@ class ProgramTwo(models.Model):
     id = models.IntegerField(primary_key=True)
     performer = models.ManyToManyField(PerformerThree)
     name = models.CharField(max_length=20)
+
+
+# 省份信息
+class Province(models.Model):
+    name = models.CharField(max_length=10)
+
+
+# 城市信息
+class City(models.Model):
+    name = models.CharField(max_length=5)
+    province = models.ForeignKey(Province, on_delete=models.CASCADE)
+
+
+# 人物信息表
+class Person(models.Model):
+    name = models.CharField(max_length=10)
+    living = models.ForeignKey(City, on_delete=models.CASCADE)
