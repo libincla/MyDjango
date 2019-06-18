@@ -74,5 +74,17 @@ class ProductListWithArgs(ListView):
 
 
 def index_form(request):
-    product = ProductForm()
-    return render(request, 'data_form.html', locals())
+    if request.method == 'GET':
+        product = ProductForm()
+        return render(request, 'data_form.html', locals())
+    else:
+        product = ProductForm(request.POST)
+        if product.is_valid():
+            name = product['name']
+            # 将控件 name 的数据进行清洗，转换成 Python 数据类型
+            cname = product.cleaned_data['name']
+            return HttpResponse('提交成功')
+        else:
+            error_msg = product.errors.as_json()
+            print(error_msg)
+            return render(request, 'data_form.html', locals())
