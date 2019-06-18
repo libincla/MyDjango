@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Product, Type
 from django.views.generic import ListView
+from .form import *
 
 
 def index(request):
@@ -70,3 +71,8 @@ class ProductListWithArgs(ListView):
         context = super().get_context_data(**kwargs)
         context['name_list'] = Product.objects.values('name', 'type')
         return context
+
+
+def index_form(request):
+    product = ProductForm()
+    return render(request, 'data_form.html', locals())
