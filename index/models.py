@@ -12,12 +12,22 @@ class Type(models.Model):
 
 
 # 创建产品信息表
+# 设置字段中文名，用于Admin后台显示
 class Product(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
-    weight = models.CharField(max_length=20)
-    size = models.CharField(max_length=20)
-    type = models.ForeignKey(Type, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, verbose_name='产品名称')
+    weight = models.CharField(max_length=20, verbose_name='重量')
+    size = models.CharField(max_length=20, verbose_name='尺寸')
+    type = models.ForeignKey(Type, on_delete=models.CASCADE, verbose_name='产品类型')
+
+    # 设置返回值
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        # 如果只设置 verbose_name，在 Admin 会显示为 "产品信息 s"
+        verbose_name = '产品信息'
+        verbose_name_plural = '产品信息'
 
 
 # 一对一关系的表1

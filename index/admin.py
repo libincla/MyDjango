@@ -2,6 +2,10 @@ from django.contrib import admin
 
 from .models import *
 
+# 修改 title 和 header
+admin.site.site_title = 'MyDjango 后台管理'
+admin.site.site_header = 'MyDjango'
+
 
 # 将index定义的模型展示在Admin后台系统中
 
@@ -18,4 +22,6 @@ from .models import *
 class ProductAdmin(admin.ModelAdmin):
     # 设置显示的字段
     list_display = ['id', 'name', 'weight', 'size', 'type']
+
+
 admin.site.register(Product, ProductAdmin)
