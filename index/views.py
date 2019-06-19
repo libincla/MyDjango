@@ -90,13 +90,22 @@ def index_form(request):
             return render(request, 'data_form.html', locals())
 
 
+# http://127.0.0.1:8000/index/data_model_form/2.html
 def index_model_form(request, id):
     if request.method == 'GET':
-        instance = Product.objects.filter(id=id)
-        if instance:
-            product = ProductModelForm(instance=instance[0])
-        else:
-            product = ProductModelForm()
+        # 初始化方法1
+        # product = ProductModelForm(initial={'name': '华为手表'})
+
+        # 初始化方法2
+        # instance = Product.objects.filter(id=id)
+        # if instance:
+        #     product = ProductModelForm(instance=instance[0])
+        # else:
+        #     product = ProductModelForm()
+
+        # 初始化方法4:重写ProductModelForm类的初始函数 __init__，详见ProductModelForm类
+        product = ProductModelForm()
+
         return render(request, 'data_form.html', locals())
     else:
         product = ProductModelForm(request.POST)

@@ -19,9 +19,16 @@ class ProductForm(forms.Form):
     choices_list = [(i + 1, v['type_name']) for i, v in enumerate(Type.objects.values('type_name'))]
     # 设置 CSS 样式
     type = forms.ChoiceField(widget=forms.widgets.Select(attrs={'class': 'type', 'size': '1'}), choices=choices_list, label='产品类型')
+    # 初始化方法3：定义表单字段时，设置参数initial，此方法不适用于ModelForm类
+    # productId = forms.CharField(max_length=20, label='产品序号', initial='No1')
 
 
 class ProductModelForm(forms.ModelForm):
+    # 初始化方法4:重写ProductModelForm类的初始函数 __init__
+    def __init__(self, *args, **kwargs):
+        super(ProductModelForm, self).__init__(*args, **kwargs)
+        self.fields['name'].initial = '我的手机'
+
     # 添加模型外的表单字段
     productId = forms.CharField(max_length=20, label='产品序号')
 
