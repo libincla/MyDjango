@@ -47,5 +47,13 @@ class ProductAdmin(admin.ModelAdmin):
     # 添加自定义字段
     list_display.append('colored_type')
 
+    # 重写 get_queryset 函数，根据不同用户角色设置数据的访问权限
+    def get_queryset(self, request):
+        qs = super(ProductAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        else:
+            return qs.filter(id__lt=6)
+
 
 admin.site.register(Product, ProductAdmin)
