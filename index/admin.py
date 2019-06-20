@@ -62,5 +62,35 @@ class ProductAdmin(admin.ModelAdmin):
                 kwargs["queryset"] = Type.objects.filter(id__lt=4)
         return super(admin.ModelAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
+    # 重写 save_model 函数，在新增或修改数据的时候，点击保存按钮所出发的功能，该函数主要对输入饿数据进行入库和更新处理。
+    def save_model(self, request, obj, form, change):
+        if change:
+            # 获取当前用户名
+            user = request.user
+            # 使用模型获取数据，pk代表具有主键属性的字段
+            name = self.model.objects.get(pk=obj.pk).name
+            # 使用表单获取数据
+            weight = form.cleaned_data['weight']
+            # 写入日志文件
+            f = open('MyDjango_log.txt', 'a')
+            f.write('产品：' + str(name) + '，被用户' + str(user) + '修改' + '\r\n')
+            f.close()
+        else:
+            pass
+        # 使用 super 可使自定义 save_model 既保留父类已有的功能又添加自定义功能
+        super(ProductAdmin, self).save_model(request, obj, form, change)
+
+    # 重写 delete_model 函数，在删除数据的时候，点击删除按钮所出发的功能，该函数主要对输入饿数据进行入库和更新处理。
+    def delete_model(self, request, obj):
+        # 获取当前用户名
+        user = request.user
+        # 使用模型获取数据，pk代表具有主键属性的字段
+        name = self.model.objects.get(pk=obj.pk).name
+        # 写入日志文件
+        f = open('MyDjango_log.txt', 'a')
+        f.write('产品：' + str(name) + '，被用户' + str(user) + '删除' + '\r\n')
+        f.close()
+        super(ProductAdmin, self).delete_model(request, obj)
+
 
 admin.site.register(Product, ProductAdmin)
