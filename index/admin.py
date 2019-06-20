@@ -55,5 +55,12 @@ class ProductAdmin(admin.ModelAdmin):
         else:
             return qs.filter(id__lt=6)
 
+    # 重写 formfield_for_foreignkey 函数，在新增/修改数据的时候，设置外键的可选项
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'type':
+            if not request.user.is_superuser:
+                kwargs["queryset"] = Type.objects.filter(id__lt=4)
+        return super(admin.ModelAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 admin.site.register(Product, ProductAdmin)
