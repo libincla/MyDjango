@@ -32,8 +32,17 @@ class ProductAdmin(admin.ModelAdmin):
     # date_hierarchy = Field
     # 在添加新数据时，设置可添加数据的字段
     fields = ['name', 'weight', 'size', 'type']
+
     # 设置可读字段，在修改或新增数据时使其无法设置
-    readonly_fields = ['name']
+    # readonly_fields = ['name']
+
+    # 重写 get_readonly_fields 函数，设置超级用户和普通用户的权限
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            self.readonly_fields = []
+        else:
+            self.readonly_fields = ['name']
+        return self.readonly_fields
 
 
 admin.site.register(Product, ProductAdmin)
