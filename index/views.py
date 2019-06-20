@@ -9,7 +9,8 @@ def index(request):
     type_list = Type.objects.values('id', 'type_name')
     name_list = Product.objects.values('name', 'type')
     title = '首页'
-    return render(request, 'index.html', context=locals(), status=200)
+    username = request.user.username
+    return render(request, 'index.html', context=locals())
 
 
 # http://127.0.0.1:8000/login.html

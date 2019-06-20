@@ -5,5 +5,7 @@ db.sqlite3
 MyDjango/__pycache__/
 index/migrations/
 index/__pycache__/
+user/migrations/
+user/__pycache__/
 user_defined/__pycache__/
 user_defined/templatetags/__pycache__/
