@@ -44,5 +44,8 @@ class ProductAdmin(admin.ModelAdmin):
             self.readonly_fields = ['name']
         return self.readonly_fields
 
+    # 添加自定义字段
+    list_display.append('colored_type')
+
 
 admin.site.register(Product, ProductAdmin)

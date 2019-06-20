@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import format_html
 
 
 # 创建产品分类表
@@ -28,6 +29,20 @@ class Product(models.Model):
         # 如果只设置 verbose_name，在 Admin 会显示为 "产品信息 s"
         verbose_name = '产品信息'
         verbose_name_plural = '产品信息'
+
+    def colored_type(self):
+        if '手机' in self.type.type_name:
+            color_code = 'red'
+        elif '平板电脑' in self.type.type_name:
+            color_code = 'blue'
+        elif '智能穿戴' in self.type.type_name:
+            color_code = 'green'
+        else:
+            color_code = 'yellow'
+        return format_html('<span style="color:{};">{}</span>', color_code, self.type)
+
+    # 设置 colored_type 在 Admin 中的标题
+    colored_type.short_description = '带颜色的产品类型'
 
 
 # 一对一关系的表1
