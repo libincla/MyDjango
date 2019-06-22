@@ -102,6 +102,7 @@ def findPassword(request):
                 new_password = True
                 VerificationCode = str(random.randint(1000, 9999))
                 request.session['VerificationCode'] = VerificationCode
+                # 发送邮件的第一种方式
                 user[0].email_user('找回密码', VerificationCode)
             # 匹配输入的验证码是否正确
             elif VerificationCode == request.session.get('VerificationCode'):
@@ -116,3 +117,33 @@ def findPassword(request):
                 new_password = False
                 del request.session['VerificationCode']
     return render(request, 'findpassword.html', locals())
+
+
+from django.core.mail import send_mail, send_mass_mail
+from django.conf import settings
+
+
+# 发送邮件的第二种方式
+def sendEmailSecondMethod(request):
+    from_email = settings.DEFAULT_FROM_EMAIL
+    # 发送一封邮件
+    # send_mail('MyDjango', 'This is Django', from_email, ['cctvjiatao@163.com'])
+    # 发送多封邮件
+    message1 = ('MyDjango', 'This is Django', from_email, ['cctvjiatao@163.com'])
+    message2 = ('MyDjango', 'This is Django', from_email, ['524sjl@163.com'])
+    message3 = ('MyDjango', 'This is Django', from_email, ['jiatao@moyi365.com'])
+    send_mass_mail((message1, message2, message3), fail_silently=False)
+
+
+# 发送邮件的第三种方式
+from django.core.mail import EmailMultiAlternatives
+
+
+def sendEmailThirdMethod(request):
+    content = '<p>这是一封<strong>重要的</strong>邮件</p>'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    msg = EmailMultiAlternatives('MyDjango', content, from_email, ['cctvjiatao@163.com'])
+    msg.content_subtype = 'html'
+    # 添加附件（可选）
+    msg.attach_file('img/p9.jpg')
+    msg.send()
