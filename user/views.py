@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.hashers import make_password
 
 
 # Create your views here.
@@ -59,7 +60,13 @@ def setpasswordView(request):
         if User.objects.filter(username=username):
             user = authenticate(username=username, password=old_password)
             if user:
+                # 使用 set_password 函数修改密码
                 user.set_password(new_password)
+                user.save()
+                tips = '密码修改成功'
+                # 使用 make_password 函数修改密码
+                dj_ps = make_password(new_password, None, 'pbkdf2_sha256')
+                user.password = dj_ps
                 user.save()
                 tips = '密码修改成功'
             else:
