@@ -45,9 +45,28 @@ def registerView(request):
     return render(request, 'user.html', locals())
 
 
-
 def setpasswordView(request):
-    pass
+    title = '修改密码'
+    unit_2 = '/user/login.html'
+    unit_2_name = '立即登录'
+    unit_1 = '/user/register.html'
+    unit_1_name = '立即注册'
+    new_password = True
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        old_password = request.POST.get('password', '')
+        new_password = request.POST.get('new_password', '')
+        if User.objects.filter(username=username):
+            user = authenticate(username=username, password=old_password)
+            if user:
+                user.set_password(new_password)
+                user.save()
+                tips = '密码修改成功'
+            else:
+                tips = '原始密码不正确'
+        else:
+            tips = '用户不存在'
+    return render(request, 'user.html', locals())
 
 
 def logoutView(request):
