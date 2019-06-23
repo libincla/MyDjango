@@ -29,6 +29,8 @@ class Product(models.Model):
         # 如果只设置 verbose_name，在 Admin 会显示为 "产品信息 s"
         verbose_name = '产品信息'
         verbose_name_plural = '产品信息'
+        # 自定义权限
+        permissions = (('visit_Product', 'Can visit Product'),)
 
     def colored_type(self):
         if '手机' in self.type.type_name:
