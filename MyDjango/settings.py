@@ -140,3 +140,6 @@ EMAIL_HOST_USER = '1903431963@qq.com'
 # SMTP服务密码
 EMAIL_HOST_PASSWORD = 'bnupelhhnidpecad'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# 将内置模型User替换成user定义的模型MyUser。若不配置，创建数据表的时候会分别创建数据表 auth_user 和 user_myuser
+AUTH_USER_MODEL = 'user.MyUser'
