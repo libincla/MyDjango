@@ -1,0 +1,43 @@
+查询用户的权限
+>>> from user.models import MyUser
+# filter 查询，返回的是列表
+>>> user = MyUser.objects.filter(username='xiaobei')[0]
+# index.add_product 是固定写法，index 是APP名， add_product 是数据表 auth_permission 的字段 codename
+# 判断用户是否具有 index.add_product 权限
+>>> user.has_perm('index.add_product')
+False
+
+
+设置用户的权限
+>>> from user.models import MyUser
+>>> user = MyUser.objects.filter(username='xiaobei')[0]
+>>> from django.contrib.auth.models import Permission
+>>> permission = Permission.objects.filter(codename='add_product')[0]
+>>> user.user_permissions.add(permission)
+>>> user.has_perm('index.add_product')
+True
+
+
+删除某条权限
+>>> from user.models import MyUser
+>>> user = MyUser.objects.filter(username='xiaobei')[0]
+>>> from django.contrib.auth.models import Permission
+>>> permission = Permission.objects.filter(codename='add_product')[0]
+>>> user.user_permissions.remove(permission)
+>>> user.has_perm('add_product')
+False
+
+
+清空当前用户的全部权限
+>>> from user.models import MyUser
+>>> user = MyUser.objects.filter(username='xiaobei')[0]
+>>> from django.contrib.auth.models import Permission
+>>> user.user_permissions.clear()
+>>> user.user_permissions.values()
+<QuerySet []>
+>>> permission = Permission.objects.filter(codename='add_product')[0]
+>>> user.user_permissions.add(permission)
+>>> user.user_permissions.values()
+<QuerySet [{'id': 45, 'name': 'Can add 产品信息', 'content_type_id': 12, 'codename': 'add_product'}]>
+
+
