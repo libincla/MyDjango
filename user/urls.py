@@ -8,4 +8,5 @@ urlpatterns = [
     path('setpassword.html', views.setpasswordView, name='setpassword'),
     path('logout.html', views.logoutView, name='logout'),
     path('findpassword.html', views.findPassword, name='findPassword'),
+    path('register_new.html', views.registerNewView, name='register_new'),
 ]

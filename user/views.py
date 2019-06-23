@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.hashers import make_password
 import random
+from .form import MyUserCreationForm
+from .models import MyUser
 
 
-# Create your views here.
-
+# http://127.0.0.1:8000/user/login.html
 def loginView(request):
     title = '登录'
     unit_2 = '/user/register.html'
@@ -16,7 +16,7 @@ def loginView(request):
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
-        if User.objects.filter(username=username):
+        if MyUser.objects.filter(username=username):
             user = authenticate(username=username, password=password)
             if user:
                 if user.is_active:
@@ -29,6 +29,7 @@ def loginView(request):
     return render(request, 'user.html', locals())
 
 
+# http://127.0.0.1:8000/user/register.html
 def registerView(request):
     title = '注册'
     unit_2 = '/user/login.html'
@@ -38,15 +39,16 @@ def registerView(request):
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
-        if User.objects.filter(username=username):
+        if MyUser.objects.filter(username=username):
             tips = '用户已存在'
         else:
-            user = User.objects.create_user(username=username, password=password)
+            user = MyUser.objects.create_user(username=username, password=password)
             user.save()
             tips = '注册成功，请登录'
     return render(request, 'user.html', locals())
 
 
+# http://127.0.0.1:8000/user/setpassword.html
 def setpasswordView(request):
     title = '修改密码'
     unit_2 = '/user/login.html'
@@ -58,7 +60,7 @@ def setpasswordView(request):
         username = request.POST.get('username', '')
         old_password = request.POST.get('password', '')
         new_password = request.POST.get('new_password', '')
-        if User.objects.filter(username=username):
+        if MyUser.objects.filter(username=username):
             user = authenticate(username=username, password=old_password)
             if user:
                 # 使用 set_password 函数修改密码
@@ -77,11 +79,13 @@ def setpasswordView(request):
     return render(request, 'user.html', locals())
 
 
+# # http://127.0.0.1:8000/user/logout.html
 def logoutView(request):
     logout(request)
     return redirect('/')
 
 
+# # http://127.0.0.1:8000/user/findpassword.html
 def findPassword(request):
     button = '获取验证码'
     new_password = False
@@ -89,7 +93,7 @@ def findPassword(request):
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
         VerificationCode = request.POST.get('VerificationCode', '')
-        user = User.objects.filter(username=username)
+        user = MyUser.objects.filter(username=username)
         # 用户不存在
         if not user:
             tips = '用户' + username + '不存在'
@@ -147,3 +151,19 @@ def sendEmailThirdMethod(request):
     # 添加附件（可选）
     msg.attach_file('img/p9.jpg')
     msg.send()
+
+
+# 扩展User模型后的注册
+# http://127.0.0.1:8000/user/register_new.html
+def registerNewView(request):
+    if request.method == 'POST':
+        user = MyUserCreationForm(request.POST)
+        if user.is_valid():
+            user.save()
+            tips = '注册成功'
+            user = MyUserCreationForm()
+        else:
+            tips = '注册信息不符合规范，请重新输入'
+    else:
+        user = MyUserCreationForm()
+    return render(request, 'register_new.html', locals())
