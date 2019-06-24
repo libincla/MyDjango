@@ -41,3 +41,35 @@ False
 <QuerySet [{'id': 45, 'name': 'Can add 产品信息', 'content_type_id': 12, 'codename': 'add_product'}]>
 
 
+
+设置用户组权限
+将 visit_Product 权限添加到用户组 group 中
+>>> from django.contrib.auth.models import Group
+>>> from django.contrib.auth.models import Permission
+>>> permission = Permission.objects.get(codename='visit_Product')
+>>> group = Group.objects.get(id=1)
+>>> group.permissions.add(permission)
+
+
+将 visit_Product 权限从用户组 group 中删除
+>>> group.permissions.remove(permission)
+
+
+删除当前用户组的所有权限
+>>> group.permissions.clear()
+
+
+将用户分配到用户组
+>>> from user.models import MyUser
+>>> from django.contrib.auth.models import Group
+>>> user = MyUser.objects.get(username='xiaobei')
+>>> group = Group.objects.get(id=1)
+>>> user.groups.add(group)
+
+
+删除用户组的某一用户
+>>> user.groups.remove(group)
+
+
+清空用户组的全部用户
+>>> user.groups.clear()
