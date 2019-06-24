@@ -3,14 +3,32 @@ from django.shortcuts import render, redirect
 from .models import Product, Type
 from django.views.generic import ListView
 from .form import *
+from django.contrib.auth.decorators import login_required, permission_required
 
 
+# 使用装饰器 login_required 和 permission_required 分别对用户登录验证和用户权限验证
+@login_required(login_url='/user/weblogin.html')
+@permission_required(perm='index.visit_Product', login_url='/user/weblogin.html')
 def index(request):
-    type_list = Type.objects.values('id', 'type_name')
-    name_list = Product.objects.values('name', 'type')
-    title = '首页'
-    username = request.user.username
     return render(request, 'index.html', context=locals())
+
+
+# 使用 has_perm 实现装饰器 permission_required 功能
+# @login_required(login_url='/user/weblogin.html')
+# def index(request):
+#     user = request.user
+#     if user.has_perm('index.visit_Product'):
+#         return render(request, 'index.html', context=locals())
+#     else:
+#         return redirect('/user/weblogin.html')
+
+
+# def index(request):
+#     type_list = Type.objects.values('id', 'type_name')
+#     name_list = Product.objects.values('name', 'type')
+#     title = '首页'
+#     username = request.user.username
+#     return render(request, 'index.html', context=locals())
 
 
 # http://127.0.0.1:8000/login.html

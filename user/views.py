@@ -4,6 +4,7 @@ from django.contrib.auth.hashers import make_password
 import random
 from .form import MyUserCreationForm
 from .models import MyUser
+from django.contrib.auth.models import Permission
 
 
 # http://127.0.0.1:8000/user/login.html
@@ -167,3 +168,45 @@ def registerNewView(request):
     else:
         user = MyUserCreationForm()
     return render(request, 'register_new.html', locals())
+
+
+def webLoginView(request):
+    tips = '请登录'
+    title = '用户登录'
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        if MyUser.objects.filter(username=username):
+            user = authenticate(username=username, password=password)
+            if user:
+                if user.is_active:
+                    login(request, user)
+                return redirect('/')
+            else:
+                tips = '账号密码错误，请重新输入'
+        else:
+            tips = '用户不存在，请注册'
+    return render(request, 'webuser.html', locals())
+
+
+def webRegisterView(request):
+    tips = '请注册'
+    title = '用户注册'
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        if MyUser.objects.filter(username=username):
+            tips = '用户已存在'
+        else:
+            user = MyUser.objects.create_user(username=username, password=password)
+            user.save()
+            # 添加权限
+            permission = Permission.objects.filter(codename='visit_Product')[0]
+            user.user_permissions.add(permission)
+            return redirect('/user/weblogin.html')
+    return render(request, 'webuser.html', locals())
+
+
+def webLogoutView(request):
+    logout(request)
+    return redirect('/')

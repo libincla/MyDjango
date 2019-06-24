@@ -20,12 +20,17 @@
             <li><a href="#">华为荣耀</a></li>
         </ul>
         <ul class="rt">
-            {% if username %}
-            <li>用户名：{{ username }}</li>
-            <li><a href="{% url 'logout' %}">退出登录</a></li>
-            {% else %}
-            <li><a href="{% url 'login' %}">登录</a></li>
-            <li><a href="{% url 'register' %}">注册</a></li>
+            {#在模版中使用user变量是一个User或者AnoymousUser对象，该对象由模型MyUser实例化#}
+            {% if user.is_authenticated %}
+            <li>用户名: {{ user.username }}</li>
+            <li><a href="{% url 'weblogout' %}">退出登录</a></li>
+            {% endif %}
+            {#在模版中使用perms变量是Permission对象，该对象由模型Permission实例化#}
+            {% if perms.index.visit_Product %}
+            <li>浏览产品信息</li>
+            {% endif %}
+            {% if perms.index.add_product %}
+            <li>添加产品信息</li>
             {% endif %}
         </ul>
     </div>
