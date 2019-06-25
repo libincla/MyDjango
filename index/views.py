@@ -6,6 +6,7 @@ from .form import *
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.template import RequestContext
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required(login_url='/user/weblogin.html')
@@ -178,3 +179,16 @@ def messageView(request):
     # 信息添加方法2
     messages.add_message(request, messages.INFO, '信息提示')
     return render(request, 'message.html', locals(), RequestContext(request))
+
+
+def paginationView(request, page):
+    Product_list = Product.objects.all()
+    # 设置每一页的数据量为3
+    paginator = Paginator(Product_list, 3)
+    try:
+        pageInfo = paginator.page(page)
+    except PageNotAnInteger:  # 如果参数page的数据类型不是整形，就返回第一页数据
+        pageInfo = paginator.page(1)
+    except EmptyPage:  # 如果要访问的页数大于实际页数，就返回最后一页的数据
+        pageInfo = paginator.page(paginator.num_pages)
+    return render(request, 'pagination.html', locals())

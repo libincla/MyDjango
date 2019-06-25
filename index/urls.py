@@ -11,4 +11,5 @@ urlpatterns = [
     path('index/data_model_form/<int:id>.html', views.index_model_form, name='data_model_form'),
     path('shopping_car.html', views.ShoppingCarView, name='ShoppingCar'),
     path('message.html', views.messageView, name='message'),
+    path('pagination/<int:page>.html', views.paginationView, name='pagination'),
 ]
