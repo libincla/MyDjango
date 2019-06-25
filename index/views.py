@@ -4,6 +4,8 @@ from .models import Product, Type
 from django.views.generic import ListView
 from .form import *
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
+from django.template import RequestContext
 
 
 @login_required(login_url='/user/weblogin.html')
@@ -165,3 +167,14 @@ def ShoppingCarView(request):
         request.session['product_info'] = product_list
         return redirect('/shopping_car.html')
     return render(request, 'shopping_car.html', locals())
+
+
+def messageView(request):
+    # 信息添加方法1
+    messages.info(request, '提示信息')
+    messages.success(request, '提示正确')
+    messages.warning(request, '提示警告')
+    messages.error(request, '提示错误')
+    # 信息添加方法2
+    messages.add_message(request, messages.INFO, '信息提示')
+    return render(request, 'message.html', locals(), RequestContext(request))
