@@ -56,7 +56,7 @@
         </div>
     </div>
     <div class="lf" id="my_hw">我的商城</div>
-    <div class="lf" id="settle_up">我的购物车</div>
+    <div class="lf" id="settle_up"><a href="{% url 'ShoppingCar' %}">我的购物车</a></div>
 
 </div><!--top_main-->
 
@@ -73,17 +73,6 @@
 </nav>
 <!-- banner 广告 -->
 <div id="banner">
-    <!--<ul id="cate_box" class="lf">-->
-    <!--<li>-->
-    <!--<h3><a href="#">手机</a></h3>-->
-    <!--<p><span>荣耀</span><span>畅玩</span><span>华为</span><span>Mate/P系列</span></p>-->
-    <!--</li>-->
-    <!--<li>-->
-    <!--<h3><a href="#">平板 & 穿戴</a></h3>-->
-    <!--<p><span>平板电脑 </span><span>手环</span><span>手表</span></p>-->
-    <!--</li>-->
-    <!--</ul>-->
-
     <ul id="cate_box" class="lf">
         {% for type in type_list %}
         <li>
@@ -128,7 +117,7 @@
                         <span>3988</span>
                     </div>
                     <div class="p-button lf">
-                        <a href="#">立即抢购</a>
+                        <a href="{% url 'index' %}?product=HUAWEI P9 Plus&price=3988">立即抢购</a>
                     </div>
                 </li>
                 <li class="channel-pro-item" style="background-color:#E2F9FB"><!--荣耀畅玩5C-->
@@ -146,7 +135,7 @@
                         <span>899</span>
                     </div>
                     <div class="p-button lf">
-                        <a href="#">立即抢购</a>
+                        <a href="{% url 'index' %}?product=荣耀畅玩5C&price=899">立即抢购</a>
                     </div>
                 </li>
                 <div class="hr-2"></div>
@@ -165,7 +154,7 @@
                         <span>1799</span>
                     </div>
                     <div class="p-button lf">
-                        <a href="#">立即抢购</a>
+                        <a href="{% url 'index' %}?product=荣耀7&price=1799">立即抢购</a>
                     </div>
                 </li>
                 <li class="channel-pro-item" style="background-color:#FFECEF"><!--荣耀畅玩5C-->
@@ -183,7 +172,7 @@
                         <span>899</span>
                     </div>
                     <div class="p-button lf">
-                        <a href="#">立即抢购</a>
+                        <a href="{% url 'index' %}?product=荣耀畅玩5X&price=899">立即抢购</a>
                     </div>
                 </li>
             </ul>
@@ -236,7 +225,6 @@
 </div>
 <div class="hr-2"></div>
 <div class="hr-40"></div>
-
 <div class="slogan">
     <ul>
         <li class="s1"><i>500强企业 品质保证</i></li>

@@ -6,11 +6,25 @@ from .form import *
 from django.contrib.auth.decorators import login_required, permission_required
 
 
-# 使用装饰器 login_required 和 permission_required 分别对用户登录验证和用户权限验证
 @login_required(login_url='/user/weblogin.html')
 @permission_required(perm='index.visit_Product', login_url='/user/weblogin.html')
 def index(request):
-    return render(request, 'index.html', context=locals())
+    product = request.GET.get('product', '')
+    price = request.GET.get('price', '')
+    if product:
+        product_list = request.session.get('product_info', [])
+        if product not in product_list:
+            product_list.append({'price': price, 'product': product})
+        request.session['product_info'] = product_list
+        return redirect('/')
+    return render(request, 'index.html', locals())
+
+
+# 使用装饰器 login_required 和 permission_required 分别对用户登录验证和用户权限验证
+# @login_required(login_url='/user/weblogin.html')
+# @permission_required(perm='index.visit_Product', login_url='/user/weblogin.html')
+# def index(request):
+#     return render(request, 'index.html', context=locals())
 
 
 # 使用 has_perm 实现装饰器 permission_required 功能
@@ -138,3 +152,16 @@ def index_model_form(request, id):
             error_msg = product.errors.as_json()
             print(error_msg)
             return render(request, 'data_form.html', locals())
+
+
+@login_required(login_url='/user/weblogin.html')
+def ShoppingCarView(request):
+    product_list = request.session.get('product_info', [])
+    del_product = request.GET.get('product', '')
+    if del_product:
+        for i in product_list:
+            if i['product'] == del_product:
+                product_list.remove(i)
+        request.session['product_info'] = product_list
+        return redirect('/shopping_car.html')
+    return render(request, 'shopping_car.html', locals())
