@@ -1,0 +1,43 @@
+>>> from django.core.paginator import Paginator
+生成数据列表
+>>> objects = [chr(x) for x in range(97,107)]
+>>> objects
+['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
+将数据列表以每三个元素分为一页
+>>> p = Paginator(objects,3)
+输出全部数据，即整个数据列表
+>>> p.object_list
+['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
+获取数据列表的长度
+>>> p.count
+10
+分页后的总页数
+>>> p.num_pages
+4
+将页数转换为range循环对象
+>>> p.page_range
+range(1, 5)
+获取第2页的数据信息
+>>> page2 = p.page(2)
+判断第2页是否存在上一页
+>>> page2.has_previous()
+True
+如果当前页数存在上一页，就输出上一页的页码，否则抛出 EmptyPage 异常
+>>> page2.previous_page_number()
+1
+判断第2页是否存在下一页
+>>> page2.has_next()
+True
+如果当前页数存在下一页，就输出下一页的页码，否则抛出 EmptyPage 异常
+>>> page2.next_page_number()
+3
+输出第2页所对应的数据内容
+>>> page2.object_list
+['d', 'e', 'f']
+输出第2页的第一条数据在整个列表的位置，数据位置从1开始计算
+>>> page2.start_index()
+4
+输出第2页的最后一条数据在整个列表的位置，数据位置从1开始计算
+>>> page2.end_index()
+6
+
